@@ -1,0 +1,31 @@
+#include <Arduino.h>
+
+// Pines de los potenciómetros
+const int potPin1 = 36;
+const int potPin2 = 39;
+
+// Variables para almacenar las lecturas y los valores mapeados
+int lecturaPot1, lecturaPot2;
+int pot1Mapeado, pot2Mapeado;
+
+void setup() {
+  // Inicialización del puerto Serial2 a 115200 baudios
+  Serial2.begin(115200);
+}
+
+void loop() {
+  // Lectura de los potenciómetros
+  lecturaPot1 = analogRead(potPin1);
+  lecturaPot2 = analogRead(potPin2);
+
+  // Mapeo de los valores leídos a un rango de 0 a 15
+  pot1Mapeado = map(lecturaPot1, 0, 4095, 0, 15);
+  pot2Mapeado = map(lecturaPot2, 0, 4095, 0, 15);
+
+  // Envío de los valores mapeados por UART (Serial2)
+  Serial2.write(pot1Mapeado);
+  Serial2.write(pot2Mapeado);
+
+  // Retardo de medio segundo
+  delay(500);
+}
